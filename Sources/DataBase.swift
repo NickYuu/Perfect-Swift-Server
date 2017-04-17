@@ -11,17 +11,6 @@ import MongoDB
 
 class MongoConnect {
     
-    var mongoURL: String {
-        return "mongodb://localhost:27017"
-    }
-    var databaseName: String {
-        return "Note"
-    }
-    var collectionName: String {
-        return "users"
-    }
-
-    
     static func queryAll() -> String? {
         let bson = BSON()
         let client = try! MongoClient(uri: "mongodb://localhost:27017")
@@ -63,9 +52,23 @@ class MongoConnect {
         }
         let bson = BSON()
         bson.append(key: "acc", string: acc)
-        
         return collection?.find(query: bson)?.jsonString
     }
+    
+    static func addContent(userId: String, title: String, content: String) {
+        let client = try! MongoClient(uri: "mongodb://localhost:27017")
+        let db = client.getDatabase(name: "Note")
+        let collection = db.getCollection(name: "content")
+        defer {
+            collection?.close()
+            db.close()
+            client.close()
+        }
+        
+        
+    }
+    
+    
     
     
     

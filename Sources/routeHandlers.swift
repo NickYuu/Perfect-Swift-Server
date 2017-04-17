@@ -64,12 +64,16 @@ func queryUser(request: HTTPRequest, _ response: HTTPResponse) {
         response.completed()
         return
     }
-    let json = MongoConnect.queryUser(acc:acc)
+    guard let json = MongoConnect.queryUser(acc:acc) else {
+        response.appendBody(string: "錯誤")
+        response.completed()
+        return
+    }
     if json == "[]" {
         response.appendBody(string: "NO")
         response.completed()
     }
-    response.appendBody(string: json!)
+    response.appendBody(string: json)
     response.completed()
 }
 
